@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Simple Validation</title>
+    <link href="../dist/css/formvalidate.css" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Well hello there!</h1>
+    <h2>I heard you were into simple form validation</h2>
+
+    <form class="js_form_validate">
+      <input type="text" placeholder="Alpha" name="alpha" data-validate="alpha" />
+      <input type="text" placeholder="AlphaNum" name="alhpanum" data-validate="alpha_num" />
+      <input type="text" placeholder="Name" name="name" data-validate="name" />
+      <input type="text" name="decimal" placeholder="Decimal" data-validate="decimal" data-active-validation="true" />
+      <input type="text" name="integer" placeholder="Integers" data-validate="integer" />
+      <input type="text" placeholder="Phone" data-validate="phone" data-required="true" name="phoney" />
+      <input type="text" name="email" placeholder="Email" data-validate="email" />
+      <input type="text" name="no validate" placeholder="No Validate" />
+      <br/>
+      <label>
+        <input type="checkbox" value="just" />
+        <span>Just a checkbox</span>
+      </label>
+      <label>
+        <input type="checkbox" value="another" data-required="true" />
+        <span>Another Checkbox</span>
+      </label>
+      <br/>
+      <label>
+        <input type="radio" name="radios" value="here" autocomplete="off" data-required="true" />
+        <span>A radio here</span>
+      </label>
+      <label>
+        <input type="radio" name="radios" value="there" autocomplete="off" />
+        <span>A radio there</span>
+      </label>
+      <br/>
+
+      <textarea type="text" placeholder="Some Texty" data-validate="plain_text" data-required="true"></textarea>
+      <br/>
+      <select placeholder="Some Texty" name="select" autocomplete="off" data-required="true">
+        <option disabled="disabled" selected="selected">Select something</option>
+        <option value="something">Something</option>
+        <option value="else">Else</option>
+      </select>
+      <br/>
+      <button type="submit" class="js_form_validate_submit">Submit</button>
+    </form>
+
+    <!-- Plugin -->
+    <script src="../dist/js/formvalidate.min.js"></script>
+
+    <!-- JS -->
+    <script>
+      new FormValidate().init();
+    </script>
+  </body>
+</html>
