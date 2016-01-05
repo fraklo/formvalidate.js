@@ -1,4 +1,4 @@
-# formvalidate.js
+# FormValidate JS
 
 > Simple Form Validation
 
@@ -38,7 +38,7 @@ Add trigger class to submit button
 <div class="btn js_form_validate_submit">Submit</div>
 ```
 
-Instantiate formvalidate
+Instantiate FormValidate
 ```js
 new FormValidate().init();
 ```
@@ -56,7 +56,7 @@ While not necessary, wrapping radios and checkboxes in label tags will make it e
 </label>
 ```
 
-Setting a radio to will cause to formvalidate to check any other radio with the same name tag and see if any was checked. 
+Setting a radio to will cause to FormValidate to check any other radio with the same name tag and see if any was checked. 
 ```html
 <!-- Radio -->
 <label>
@@ -146,13 +146,13 @@ These are the validation types available
 ```
 
 ## Options
-You can change the trigger/style classes that formvalidate will look for and set. Here are the options and the defaults:
+You can change the trigger/style classes that FormValidate will look for and set. Here are the options and the defaults:
 ```js
 // Set this to false if you dont want input filtering on
 activeInputFiltering: true,
 
 // This value will be prepended with "data-" to create the data
-// validate attribute that formvalidate will use from the inputs
+// validate attribute that FormValidate will use from the inputs
 // it finds. By default it looks for data-validate
 dataTag: 'validate',
 
@@ -167,14 +167,14 @@ errorClass: 'error',
 
 // Sets target to apply the error class on failed validation.
 // Setting a class (i.e. input-wrapper) of a parent element will
-// instruct formvalidate to apply the error class to element instead.
+// instruct FormValidate to apply the error class to element instead.
 errorTarget: 'self',
 
 // Class added to form when form is being processed
 processingClass: 'processing',
 
 // This value will be prepended with "data-" to create the
-// data required attribute that formvalidate will use to determine
+// data required attribute that FormValidate will use to determine
 // if an input is required. By default it looks for data-required
 requiredTag: 'required',
 
