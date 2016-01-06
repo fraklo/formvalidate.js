@@ -20,20 +20,21 @@ a {
   margin-bottom: 1rem;}
   .input-wrapper.inline {
     display: inline-block;
-    width: 48%; }
+    width: 48.5%; }
     .input-wrapper.inline:first-of-type {
       margin-right: 1%; }
-    .input-wrapper.inline:last-of-type {
+    .input-wrapper.inline + .input-wrapper.inline {
       margin-left: 1%; }
 
   .input-wrapper label {
-    cursor: pointer; }
+    cursor: pointer;
+    margin-right: 2rem; }
   .input-wrapper input {
     border-radius: 3px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     padding: .4rem;
     width: 100%; }
-    .input-wrapper input[type=checkbox] {
+    .input-wrapper input[type=checkbox], .input-wrapper input[type=radio] {
       width: auto; }
 
 .btn {

@@ -83,13 +83,28 @@
           <input type="text" placeholder="First" name="first" data-validate="name" data-required="true" autocomplete="off" />
         </div>
         <div class="input-wrapper inline">
-          <input class="js_last" type="text" placeholder="Last" name="last"  autocomplete="off" />
-          <sub>is set to integer filtering</sub>
+          <input class="js_last" type="text" placeholder="Last" name="last" data-validate="name" data-required="true" autocomplete="off" />
+        </div>
+        <div class="input-wrapper">
+          <input type="text" placeholder="Phone" name="phone" autocomplete="off" data-validate="phone" data-required="true" />
+        </div>
+        <div class="input-wrapper">
+          <input type="email" placeholder="Email" name="email" autocomplete="off" data-validate="email" data-required="true" />
         </div>
         <div class="input-wrapper">
           <label>
-            <input type="checkbox" value="agree" data-required="true"  autocomplete="off" />
+            <input type="checkbox" value="agree" data-required="true" autocomplete="off" />
             <span>Check</span>
+          </label>
+        </div>
+        <div class="input-wrapper">
+          <label>
+            <input type="radio" value="on" name="radios_state" data-required="true" autocomplete="off" />
+            <span>On</span>
+          </label>
+          <label>
+            <input type="radio" value="off" name="radios_state" data-required="true" autocomplete="off" />
+            <span>Off</span>
           </label>
         </div>
         <div class="input-wrapper inline">
@@ -253,7 +268,8 @@ submitClass: 'js_form_validate_submit'</code></pre>
           lastNameInput = document.getElementsByClassName('js_last'),
           submiBtn = document.getElementsByClassName('js_form_validate_submit');
 
-      formValidate.setInputFiltering(lastNameInput, 'integer');
+      formValidate.setFormFiltering(form);
+
       submiBtn[0].addEventListener('click', function() {
         var res = formValidate.validateForm(form, false);
         form[0].className = form[0].className.replace(' success', '');
