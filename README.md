@@ -4,7 +4,7 @@
 
 A simple js drop-in for basic form validation. In plain JS.
 
-**IMPORTANT**: You should never trust client side validation. ALWAYS verify the data on the back end. This is meant to only provide feedback to the user and reduce the number of round trips to the server.   
+**IMPORTANT**: You should never trust client side validation. ALWAYS verify the data on the back end. This is meant to only provide feedback to the user and reduce the number of round trips to the server.
 
 ## Basic Setup
 
@@ -46,7 +46,7 @@ new FormValidate().init();
 ## Checkboxes, Radios and Selects
 The only formvalid option here is the required attribute.
 
-Setting a checkbox to required will only validate if the checkbox is checked. 
+Setting a checkbox to required will only validate if the checkbox is checked.
 While not necessary, wrapping radios and checkboxes in label tags will make it easier for the user to click the intended target as well as make it easier to style if/when an error occurs.
 ```html
 <!-- Checkbox -->
@@ -56,7 +56,7 @@ While not necessary, wrapping radios and checkboxes in label tags will make it e
 </label>
 ```
 
-Setting a radio to will cause to FormValidate to check any other radio with the same name tag and see if any was checked. 
+Setting a radio to will cause to FormValidate to check any other radio with the same name tag and see if any was checked.
 ```html
 <!-- Radio -->
 <label>
@@ -91,6 +91,11 @@ formValidate.setForm(form)
 This method allows you to set filtering on an input. Pass in an input and any of the validation types found below.
 ```js
 formValidate.setInputFiltering(input, validation)
+```
+
+This method activates filtering on the inputs within a form.
+```js
+formValidate.setFormFiltering(form)
 ```
 
 Programattically trigger the validation of a form. Pass a form as the first paramter. Setting the second parameter to <code>false</code> will return an object with the results.

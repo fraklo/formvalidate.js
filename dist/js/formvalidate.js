@@ -8,7 +8,7 @@
           activeInputFiltering: true,
 
           // This value will be prepended with "data-" to create the data
-          // validate attribute that formvalidate will use from the inputs
+          // validate attribute that FormValidate will use from the inputs
           // it finds. By default it looks for data-validate
           dataTag: 'validate',
 
@@ -23,14 +23,14 @@
 
           // Sets target to apply the error class on failed validation.
           // Setting a class (i.e. input-wrapper) of a parent element will
-          // instruct formvalidate to apply the error class to element instead.
+          // instruct FormValidate to apply the error class to element instead.
           errorTarget: 'self',
 
           // Class added to form when form is being processed
           processingClass: 'processing',
 
           // This value will be prepended with "data-" to create the
-          // data required attribute that formvalidate will use to determine
+          // data required attribute that FormValidate will use to determine
           // if an input is required. By default it looks for data-required
           requiredTag: 'required',
 
@@ -92,20 +92,13 @@
     // Sets up the given form for validation
     // also initiates active validation if needed
     function setForm(form) {
-      var formEls, j, submitBtn;
+      var inputs, submitBtn;
+
+      // Get form valid form inputs
+      formEls = form.querySelectorAll('input,textarea,select');
 
       setFormSubmitListener(form);
-
-      // Get form valid form inputs (sans radios/checkboxes)
-      formEls = form.querySelectorAll('input,textarea,select');
-      for(j = 0; j < formEls.length; j++) {
-        var input = formEls[j];
-
-        if(options.activeInputFiltering ||
-                input.getAttribute('data-active-validation')) {
-          setInputFiltering(input);
-        }
-      }
+      setFormFiltering(form, inputs);
 
       // Get form submit button
       // Should be only one, so grab that one
@@ -120,9 +113,24 @@
 
           // Add processing class
           form.className = form.className+' '+options.processingClass;
-          validateForm(form, formEls, true);
+          validateForm(form, inputs, true);
         }
       });
+    }
+
+
+    // Sets up all the input filtering for a given form
+    function setFormFiltering(form, inputs) {
+      var j;
+
+      for(j = 0; j < inputs.length; j++) {
+        var input = inputs[j];
+
+        if(options.activeInputFiltering ||
+                input.getAttribute('data-active-validation')) {
+          setInputFiltering(input);
+        }
+      }
     }
 
 
@@ -557,6 +565,12 @@
       setInputFiltering(input, validation);
     }
 
+    this.form__setFormFiltering = function(form) {
+      var inputs = form.querySelectorAll('input,textarea,select');
+
+      setFormFiltering(form, inputs);
+    }
+
     this.form__validateForm = function(form, autoSubmit) {
       var inputs = form.querySelectorAll('input,textarea,select');
       setFormSubmitListener(form);
@@ -586,6 +600,13 @@
     var i;
     for(i = 0; i < input.length; i++) {
       this.form__setInputFiltering(input[i], validation);
+    }
+  }
+
+  FormValidate.prototype.setFormFiltering = function(form) {
+    var i, result;
+    for(i = 0; i < form.length; i++) {
+      this.form__setFormFiltering(form[i]);
     }
   }
 
