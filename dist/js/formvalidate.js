@@ -8,22 +8,27 @@
           activeInputFiltering: true,
 
           // This value will be prepended with "data-" to create the data
+          // active validation attribute that FormValidate will use from the
+          // inputs it finds. By default it looks for data-active-validation
+          dataActiveValidation: 'active-validation',
+
+          // This value will be prepended with "data-" to create the data
           // validate attribute that FormValidate will use from the inputs
           // it finds. By default it looks for data-validate
           dataTag: 'validate',
 
-          // This is used to find forms to validate
+          // This is used to find form targets to validate
           formClass: 'js_form_validate',
 
-          // Class added to forms that validate successfully
+          // Class added to form targets that validate successfully
           formSuccessClass: 'validate-success',
 
           // Class added to targets that fail validation
-          errorClass: 'error',
+          errorClass: 'validate-error',
 
           // Sets target to apply the error class on failed validation.
-          // Setting a class (i.e. input-wrapper) of a parent element will
-          // instruct FormValidate to apply the error class to element instead.
+          // Setting a class name (i.e. input-wrapper) will instruct FormValidate
+          // to add the error to a parent that has this class.
           errorTarget: 'self',
 
           // Class added to form when form is being processed
@@ -48,16 +53,18 @@
     }
 
 
-    // Private Methods
-    function extendOptions(source, properties) {
-      var property;
+    //// Private Methods ///////////////////////////////
 
-      for(property in properties) {
-        if(properties.hasOwnProperty(property)) {
-          source[property] = properties[property];
+    function extendOptions(defaults, options) {
+      var option;
+
+      for(option in options) {
+        if(options.hasOwnProperty(option)) {
+          defaults[option] = options[option];
         }
       }
-      return source;
+
+      return defaults;
     }
 
 
@@ -73,37 +80,20 @@
     }
 
 
-    // Applies active input filtering to inputs
-    function setInputFiltering(input, type) {
-      if(!type) {
-        type = input.getAttribute('data-'+options.dataTag);
-      }
-      // Input has type and type is in filterTypes list
-      if(type && filterTypes.indexOf(type) >= 0) {
-        // Apply active filtering
-        input.addEventListener('keyup', function(e) {
-          var el = e.target;
-          el.value = validateStr(el.value, type, true);
-        });
-      }
-    }
-
-
     // Sets up the given form for validation
     // also initiates active validation if needed
     function setForm(form) {
       var inputs, submitBtn;
 
       // Get form valid form inputs
-      formEls = form.querySelectorAll('input,textarea,select');
+      inputs = form.querySelectorAll('input,textarea,select');
 
       setFormSubmitListener(form);
-      setFormFiltering(form, inputs);
+      setFormFiltering(inputs);
 
       // Get form submit button
       // Should be only one, so grab that one
       submitBtn = form.getElementsByClassName(options.submitClass)[0];
-
       submitBtn.addEventListener('click', function(e) {
         // Remove success in case of re-validation/ new info
         form.className = form.className.replace(options.formSuccessClass, '');
@@ -120,15 +110,13 @@
 
 
     // Sets up all the input filtering for a given form
-    function setFormFiltering(form, inputs) {
-      var j;
+    function setFormFiltering(inputs) {
+      var i;
 
-      for(j = 0; j < inputs.length; j++) {
-        var input = inputs[j];
-
+      for(i = 0; i < inputs.length; i++) {
         if(options.activeInputFiltering ||
-                input.getAttribute('data-active-validation')) {
-          setInputFiltering(input);
+                inputs[i].getAttribute('data-'+options.dataActiveValidation)) {
+          setInputFiltering(inputs[i]);
         }
       }
     }
@@ -147,6 +135,24 @@
     }
 
 
+    // Applies active input filtering to inputs
+    function setInputFiltering(input, type) {
+      if(!type) {
+        type = input.getAttribute('data-'+options.dataTag);
+      }
+
+      // Input has type and type is in filterTypes list
+      if(type && filterTypes.indexOf(type) >= 0) {
+
+        // Apply active filtering
+        input.addEventListener('keyup', function(e) {
+          var el = e.target;
+          el.value = validateStr(el.value, type, true);
+        });
+      }
+    }
+
+
     // Validates form
     // Loops through all elements in form and checks validity
     // based on data-validate tag
@@ -161,6 +167,8 @@
       for(i = 0; i < inputs.length; i++) {
         el = inputs[i];
         if(el.type.toLowerCase() === 'radio') {
+
+          // Radio requires special check
           if(el.getAttribute('data-'+options.requiredTag)) {
             radioCheck[el.name] = true;
           }
@@ -174,6 +182,8 @@
           }
         }
       }
+
+      // Set error on any radio set that failed
       for(var key in radioCheck) {
         if (!radioCheck.hasOwnProperty(key)) continue;
         if(!setRadioError(key)) {
@@ -181,14 +191,19 @@
           resultObj.isValid = false;
         }
       }
+
       if(resultObj.isValid) {
+
         // Form is good, replace processing class with success
         form.className = form.className.replace(options.processingClass,
                                                options.formSuccessClass);
       } else {
+
         // Remove processing class
         form.className = form.className.replace(options.processingClass, '');
       }
+
+      // Submit form or return result
       if(autoSubmit && resultObj.isValid) {
         form.submit();
       } else {
@@ -210,8 +225,9 @@
                                                       el.type.toLowerCase();
       inputValid = true;
       if(type === 'select') {
-        if(isRequired &&
-                el.selectedIndex === 0) {
+
+        // Select checks against default (0 index) value
+        if(isRequired && el.selectedIndex === 0) {
           inputValid = false;
         }
       } else if(type === 'radio') {
@@ -223,7 +239,7 @@
           validation = el.getAttribute('data-' + options.dataTag);
         }
         if(type === 'checkbox' && isRequired) {
-          inputValid = validateCheckbox(el);
+          inputValid = el.checked;
         } else if(validation && filterTypes.indexOf(validation) >= 0) {
 
           // Check for empty value
@@ -238,6 +254,7 @@
           }
         }
       }
+
       if(!inputValid) {
         setError(el);
       }
@@ -279,7 +296,8 @@
     }
 
 
-    //// Validation/Filtering functions ////
+
+    //// Validation/Filtering functions  ///////////////////////////////
 
     // Alhpabet letters only, no spaces or anything else
     // abCDefG
@@ -431,11 +449,8 @@
     }
 
 
-    // Checks if checkbox is checked
-    function validateCheckbox(el) {
-      return el.checked;
-    }
 
+    //// Error handler functions  ///////////////////////////////
 
     // Remove error
     function removeError(e) {
@@ -510,34 +525,13 @@
     }
 
 
-    // Gets the index of string withing an array
-    function indexOf(needle) {
 
-      // Check to see if browser has support
-      if(typeof Array.prototype.indexOf === 'function') {
-        indexOf = Array.prototype.indexOf;
-      } else {
+    //// Utility functions  ///////////////////////////////
 
-        // Browser lacks support, recreate function
-        indexOf = function(needle) {
-          var i = -1, index = -1;
-          for(i = 0; i < this.length; i++) {
-            if(this[i] === needle) {
-              index = i;
-              break;
-            }
-          }
-          return index;
-        };
-      }
-
-      return indexOf.call(this, needle);
-    }
-
-
-    // Gets the parent of element that contains given class
+    // Searches up the dom tree for parent with given class
     function getParentWithClass(el, needleClass) {
       var elClass;
+
       needleClass = needleClass.toLowerCase();
       while(el.parentNode) {
         elClass = el.className.toLowerCase();
@@ -547,12 +541,13 @@
         el = el.parentNode;
       }
 
-
       return el;
     }
 
 
-    // Hooks for Public Methods
+
+    //// Public Method Hooks  ///////////////////////////////
+
     this.form__init = function() {
       init();
     }
@@ -584,7 +579,9 @@
   }
 
 
-  // Public Methods
+
+  //// Public Method Hooks  ///////////////////////////////
+
   FormValidate.prototype.init = function() {
     this.form__init();
   }

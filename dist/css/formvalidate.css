@@ -1,8 +1,8 @@
-.error {
+.validate-error {
   color: red;
   border: 1px solid red;
 }
 
-.error + span {
+.validate-error + span {
   color: red;
 }
