@@ -79,8 +79,8 @@ a {
   border-color: rgba(255, 255, 255, 0.3); }
 
 
-input.error,
-input.error + span {
+input.validate-error,
+input.validate-error + span {
   border-color: red;
   color: red; }
 
