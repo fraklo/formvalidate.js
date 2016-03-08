@@ -157,6 +157,11 @@ You can change the trigger/style classes that FormValidate will look for and set
 activeInputFiltering: true,
 
 // This value will be prepended with "data-" to create the data
+// active validation attribute that FormValidate will use from the
+// inputs it finds. By default it looks for data-active-validation
+dataActiveValidation: 'active-validation',
+
+// This value will be prepended with "data-" to create the data
 // validate attribute that FormValidate will use from the inputs
 // it finds. By default it looks for data-validate
 dataTag: 'validate',
@@ -168,7 +173,7 @@ formClass: 'js_form_validate',
 formSuccessClass: 'validate-success',
 
 // Class added to targets that fail validation
-errorClass: 'error',
+errorClass: 'validate-error',
 
 // Sets target to apply the error class on failed validation.
 // Setting a class (i.e. input-wrapper) of a parent element will
